@@ -1,0 +1,38 @@
+{
+  "name": "@kitbag/lorem",
+  "version": "0.0.1",
+  "description": "A simple and versatile mapping utility for Typescript.",
+  "author": "@kitbag",
+  "bugs": {
+    "url": "https://github.com/kitbagjs/lorem/issues"
+  },
+  "homepage": "https://github.com/kitbagjs/lorem#readme",
+  "main": "./dist/lorem.umd.cjs",
+  "module": "./dist/lorem.mjs",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/lorem.mjs",
+      "require": "./dist/lorem.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && vite build",
+    "build:watch": "tsc && vite build --watch",
+    "dev": "vite",
+    "lint": "eslint ./src",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@prefecthq/eslint-config": "1.0.31",
+    "@types/node": "^20.8.6",
+    "eslint": "^8.49.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.8",
+    "vite-plugin-dts": "^3.6.0",
+    "vitest": "^0.34.6"
+  }
+}
