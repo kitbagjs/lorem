@@ -1,8 +1,8 @@
 import { test } from 'vitest'
-import { generateDictionary } from '@/dictionary'
+import { generateParagraph } from '@/paragraph'
 
 test('test', () => {
-  const dictionary = generateDictionary()
+  const value = new Array(4).fill(null).map(() => generateParagraph())
 
-  console.log(dictionary)
+  console.log(value.map(paragraph => paragraph.toString()).join(''))
 })
