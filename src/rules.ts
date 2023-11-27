@@ -30,26 +30,26 @@ export const rules = {
     const lastLetter = word.lastLetter?.toString()
     return !lastLetter || !letter.toString().toLowerCase().startsWith(lastLetter)
   },
-  notTooLong: () => (index, length, word, letter) => {
-    return index + letter.length <= length
+  notMoreThanOne: () => (index, length, word, letter) => {
+    return letter.length === 1
   },
   notFollowing: (previous: string) => (index, length, word) => {
     return !word.toString().endsWith(previous)
   },
 } satisfies Record<string, RuleFunction>
 
-const globalRules: Rule[] = [rules.notDouble(), rules.notTooLong()]
+const globalRules: Rule[] = [rules.notDouble()]
 
 const letterRecords: LetterRecord[] = [
   { letters: [new Letter('a'), new Letter('n')], frequency: .016410, rules: [] },
   { letters: [new Letter('b'), new Letter('l')], frequency: .013620, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('b'), new Letter('r')], frequency: .016213, rules: [rules.mustBeFirst()] },
-  { letters: [new Letter('c'), new Letter('k')], frequency: .010960, rules: [rules.notFirst()] },
+  { letters: [new Letter('c'), new Letter('k')], frequency: .010960, rules: [rules.notFirst(), rules.notFollowing('fu'), rules.notFollowing('co'), rules.notFollowing('di'), rules.notFollowing('pri')] },
   { letters: [new Letter('c'), new Letter('l')], frequency: .040320, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('c'), new Letter('r')], frequency: .041958, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('c'), new Letter('t')], frequency: .045388, rules: [rules.mustBeLast()] },
   { letters: [new Letter('d'), new Letter('r')], frequency: .019430, rules: [rules.mustBeFirst()] },
-  { letters: [new Letter('e'), new Letter('r')], frequency: .017098, rules: [] },
+  { letters: [new Letter('e'), new Letter('r')], frequency: .017098, rules: [rules.notFollowing('nig')] },
   { letters: [new Letter('f'), new Letter('l')], frequency: .015802, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('f'), new Letter('r')], frequency: .014039, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('f'), new Letter('t')], frequency: .018121, rules: [rules.mustBeLast()] },
@@ -83,8 +83,8 @@ const letterRecords: LetterRecord[] = [
   { letters: [new Letter('s'), new Letter('m')], frequency: .049191, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('s'), new Letter('n')], frequency: .050592, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('s'), new Letter('p')], frequency: .051004, rules: [] },
-  { letters: [new Letter('s'), new Letter('s')], frequency: .053092, rules: [rules.notFirst()] },
-  { letters: [new Letter('s'), new Letter('t')], frequency: .052402, rules: [] },
+  { letters: [new Letter('s'), new Letter('s')], frequency: .053092, rules: [rules.notFirst(), rules.notFollowing('pi'), rules.notFollowing('pu')] },
+  { letters: [new Letter('s'), new Letter('t')], frequency: .052402, rules: [rules.notFollowing('slu'), rules.notFollowing('twa')] },
   { letters: [new Letter('s'), new Letter('w')], frequency: .051034, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('t'), new Letter('h')], frequency: .027120, rules: [] },
   { letters: [new Letter('t'), new Letter('r')], frequency: .013050, rules: [] },
@@ -94,23 +94,23 @@ const letterRecords: LetterRecord[] = [
   { letters: [new Letter('x'), new Letter('t')], frequency: .001562, rules: [rules.mustBeLast()] },
   { letters: [new Letter('a')], frequency: .084966, rules: [] },
   { letters: [new Letter('b')], frequency: .020720, rules: [] },
-  { letters: [new Letter('c')], frequency: .045388, rules: [] },
-  { letters: [new Letter('d')], frequency: .033844, rules: [] },
-  { letters: [new Letter('e')], frequency: .111607, rules: [] },
+  { letters: [new Letter('c')], frequency: .045388, rules: [rules.notFollowing('bit'), rules.notFollowing('fu'), rules.notFollowing('co'), rules.notFollowing('di')] },
+  { letters: [new Letter('d')], frequency: .033844, rules: [rules.notFollowing('tur')] },
+  { letters: [new Letter('e')], frequency: .111607, rules: [rules.notFollowing('nig')] },
   { letters: [new Letter('f')], frequency: .018121, rules: [] },
-  { letters: [new Letter('g')], frequency: .024705, rules: [] },
+  { letters: [new Letter('g')], frequency: .024705, rules: [rules.notFollowing('fa')] },
   { letters: [new Letter('h')], frequency: .030034, rules: [] },
   { letters: [new Letter('i')], frequency: .075448, rules: [] },
   { letters: [new Letter('j')], frequency: .001965, rules: [] },
   { letters: [new Letter('k')], frequency: .011016, rules: [rules.mustBeFirst()] },
   { letters: [new Letter('l')], frequency: .054893, rules: [] },
   { letters: [new Letter('m')], frequency: .030129, rules: [] },
-  { letters: [new Letter('n')], frequency: .066544, rules: [] },
+  { letters: [new Letter('n')], frequency: .066544, rules: [rules.notFollowing('cu'), rules.notFollowing('dam')] },
   { letters: [new Letter('o')], frequency: .071635, rules: [] },
   { letters: [new Letter('p')], frequency: .031671, rules: [] },
   { letters: [new Letter('r')], frequency: .075809, rules: [] },
-  { letters: [new Letter('s')], frequency: .057351, rules: [] },
-  { letters: [new Letter('t')], frequency: .069509, rules: [] },
+  { letters: [new Letter('s')], frequency: .057351, rules: [rules.notFollowing('as')] },
+  { letters: [new Letter('t')], frequency: .069509, rules: [rules.notFollowing('twa'), rules.notFollowing('shi')] },
   { letters: [new Letter('u')], frequency: .036308, rules: [] },
   { letters: [new Letter('v')], frequency: .010074, rules: [] },
   { letters: [new Letter('w')], frequency: .012899, rules: [] },
@@ -123,9 +123,26 @@ const letters = new FrequencyArray(letterRecords)
 const vowels = new FrequencyArray(letterRecords.filter(({ letters: [letter] }) => letter.isVowel))
 const consonants = new FrequencyArray(letterRecords.filter(({ letters: [letter] }) => !letter.isVowel))
 
-export function nextLetters(index: number, length: number, word: Word): Letter[] {
+export function nextLetter(index: number, length: number, word: Word): Letter {
   if (length === 1) {
-    return [new Letter('a')]
+    return new Letter('a')
+  }
+
+  const letterRecord = nextFrequencyArray(index, word).random()
+  const letterRules = [rules.notMoreThanOne(), ...globalRules, ...letterRecord.rules]
+  const letterIsValid = letterRules.every(rule => rule(index, length, word, letterRecord.letters))
+
+  if (!letterIsValid) {
+    return nextLetter(index, length, word)
+  }
+
+  const [first] = letterRecord.letters
+  return new Letter(first.toString())
+}
+
+export function nextLetters(index: number, length: number, word: Word): Letter[] {
+  if (length <= 2 || length - index < 2) {
+    return [nextLetter(index, length, word)]
   }
 
   const letterRecord = nextFrequencyArray(index, word).random()
