@@ -1,3 +1,4 @@
+export * from './frequencyArray'
 export * from './letter'
 export * from './paragraph'
 export * from './sentence'

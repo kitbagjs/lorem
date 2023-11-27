@@ -17,10 +17,6 @@ export function gaussian(mean: number, rangeMin: number, rangeMax: number): numb
   return Math.min(Math.max(num, rangeMin), rangeMax)
 }
 
-export function pick<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)]
-}
-
 export function number(min: number, max: number): number {
   min = Math.ceil(min)
   max = Math.floor(max)

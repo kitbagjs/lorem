@@ -12,10 +12,6 @@ export class Sentence {
   }
 
   public toString(): string {
-    return `${capitalize(this.words.map(word => word.toString()).join(' '))}.`
+    return `${this.words.map(word => word.toString()).join(' ')}.`
   }
-}
-
-function capitalize(value: string): string {
-  return value.charAt(0).toUpperCase() + value.slice(1)
 }

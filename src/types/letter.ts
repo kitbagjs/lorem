@@ -1,3 +1,5 @@
+import { VOWELS } from '@/rules'
+
 export class Letter {
   public letter: string
 
@@ -6,14 +8,18 @@ export class Letter {
   }
 
   public get isVowel(): boolean {
-    return 'aeiou'.includes(this.letter)
+    return VOWELS.includes(this.letter)
+  }
+
+  public get length(): number {
+    return this.letter.length
   }
 
   public toString(): string {
     return this.letter
   }
 
-  public isSame(letter: Letter): boolean {
-    return letter.toString() === this.toString()
+  public toUpperCase(): void {
+    this.letter = this.letter.toUpperCase()
   }
 }

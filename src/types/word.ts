@@ -13,8 +13,12 @@ export class Word {
     return new Letter(value)
   }
 
-  public push(letter: Letter): void {
-    this.letters.push(letter)
+  public get length(): number {
+    return this.letters.length
+  }
+
+  public push(...letters: Letter[]): void {
+    this.letters.push(...letters)
   }
 
   public toString(): string {
